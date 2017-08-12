@@ -1,0 +1,3 @@
+NODE_ROLE=@param:node-role
+SLACK_WEBHOOK_URL=@param:slack-webhook-url
+SLACK_CHANNEL=@param:slack-channel

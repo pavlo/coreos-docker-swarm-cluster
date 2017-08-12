@@ -1,0 +1,17 @@
+[Unit]
+Description=Vault Server
+Requires=cluster-bootstrap.service
+After=cluster-bootstrap.service
+
+[Service]
+EnvironmentFile=-/etc/environment
+EnvironmentFile=-/etc/custom-environment
+TimeoutStartSec=0
+ExecStartPre=-/usr/bin/docker kill vault
+ExecStartPre=-/usr/bin/docker rm vault
+ExecStartPre=/usr/bin/docker pull vault:0.6.4
+ExecStart=/usr/bin/docker run -p 8200:8200 --cap-add=IPC_LOCK -e 'VAULT_LOCAL_CONFIG={"listener": [{"tcp": {"address": "0.0.0.0:8200","tls_disable": 1}}],"storage": {"etcd": {"address": "http://${COREOS_PRIVATE_IPV4}:2379","etcd_api": "v2"}}}' vault server
+ExecStop=-/usr/bin/docker stop vault
+
+[Install]
+WantedBy=multi-user.target

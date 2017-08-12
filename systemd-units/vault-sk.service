@@ -1,0 +1,20 @@
+[Unit]
+Description=Sidekiq Unit for Vault
+BindsTo=vault.service
+Requires=vault.service
+After=vault.service
+
+[Service]
+TimeoutStartSec=0
+EnvironmentFile=/etc/environment
+ExecStart=/bin/bash -c 'while true; do \
+    if [ `curl http://localhost:8200/v1/sys/seal-status | jq '.sealed'` = 'false' ]; \
+      then /usr/bin/etcdctl set /services/vault/${COREOS_PRIVATE_IPV4} "http://${COREOS_PRIVATE_IPV4}:8200" --ttl 60; \
+    fi; \
+    sleep 45; \
+    done'
+
+ExecStop=/usr/bin/etcdctl rm /services/vault/${COREOS_PRIVATE_IPV4}
+
+[Install]
+WantedBy=multi-user.target

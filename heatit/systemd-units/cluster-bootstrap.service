@@ -1,0 +1,16 @@
+[Unit]
+Description=Cluster Bootstrap
+Requires=docker.service
+Requires=etcd2.service
+After=docker.service
+After=etcd2.service
+
+[Service]
+EnvironmentFile=-/etc/environment
+Type=oneshot
+RemainAfterExit=yes
+ExecStartPre=-/usr/bin/rm -rf /etc/coreos-docker-swarm-cluster
+ExecStart=/usr/bin/git clone https://github.com/pavlo/coreos-docker-swarm-cluster.git /etc/coreos-docker-swarm-cluster
+
+[Install]
+WantedBy=multi-user.target
