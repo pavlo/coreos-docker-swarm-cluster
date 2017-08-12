@@ -3,11 +3,9 @@ Description=Node lifecycle service
 Requires=etcd2.service
 Requires=network-online.target
 Requires=systemd-resolved.service
-Requires=cluster-bootstrap.service
 After=etcd2.service
 After=network-online.target
 After=systemd-resolved.service
-After=cluster-bootstrap.service
 
 [Service]
 EnvironmentFile=-/etc/environment
