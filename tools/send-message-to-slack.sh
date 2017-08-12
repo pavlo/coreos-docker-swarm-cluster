@@ -1,9 +1,29 @@
 #!/bin/bash
 
-source /etc/custom-environment
+TEMP=`getopt -o m:u:i::c: -- "$@"`
+eval set -- "$TEMP"
 
-# todo: parse required and optional params
 
-curl -X POST --data-urlencode \
-    "payload={'channel': '#aws-staging-events', 'username': 'webhookbot', 'text': 'Manager node at ${COREOS_PRIVATE_IPV4} is STARTED!', 'icon_emoji': ':white_check_mark:'}\" \
-    @param:slack-webhook-url;
+icon=":white_check_mark:"
+
+while true ; do
+  case "$1" in
+    -m)
+      message=$2 ; shift 2 ;;
+    -u)
+      url=$2 ; shift 2 ;;
+    -i)
+      icon=$2 ; shift 2 ;;
+    -c)
+      channel=$2 ; shift 2 ;;
+    --) shift ; break ;;
+    *) echo "Internal error!" ; exit 1 ;;
+  esac
+done
+
+echo "Message: $message"
+echo "URL: $url"
+echo "Icon: $icon"
+
+curl -X POST --data-urlencode "payload={'channel': '$channel', 'username': 'webhookbot', 'text': '$message'}" $url
+#echo -X POST --data-urlencode "payload={'channel': '$channel', 'username': 'webhookbot', 'text': '$message', 'icon_emoji': '$icon'}" $url

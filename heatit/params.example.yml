@@ -1,4 +1,4 @@
 node-role: either "manager" or "worker" 
 coreos-cluster-token: <grab token at https://discovery.etcd.io/new?size=N>
 slack-webhook-url: "Slack webhook URL"
-slack-channel: "Slack channel to post cluster health notifications to"
+slack-channel: "#Slack channel to post cluster health notifications to (starts with #)"
