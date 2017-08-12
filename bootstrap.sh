@@ -12,6 +12,8 @@ slack=$cluster_config_dir/tools/send-message-to-slack.sh
 
 $slack -m "Bootstraping a *$1* node at ${COREOS_PRIVATE_IPV4}" -u $SLACK_WEBHOOK_URL -c "#$SLACK_CHANNEL"
 
+$cluster_config_dir/tools/join-swarm-cluster.sh $1
+
 unit_files="$cluster_config_dir/$1-systemd-units.txt"
 cat $unit_files | while read unit
 do
@@ -22,7 +24,7 @@ do
    $slack -m "-- Started unit _${unit}_ on ${COREOS_PRIVATE_IPV4}" -u $SLACK_WEBHOOK_URL -c "#$SLACK_CHANNEL"
 done
 
-$cluster_config_dir/tools/join-swarm-cluster.sh $1
+
 
 #etcdctl set nodes/$1s/${COREOS_PRIVATE_IPV4} ${COREOS_PRIVATE_IPV4}
 
