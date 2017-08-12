@@ -16,9 +16,9 @@ coreos:
         @insert: file:./systemd-units/cluster-bootstrap.service
   update:
     reboot-strategy: "etcd-lock"
-  write_files:
-    - path: "/etc/custom-environment"
-      permissions: "755"
-      owner: "root"
-      content: |
-        @insert: file:./files/custom-environment
+write_files:
+  - path: "/etc/custom-environment"
+    permissions: "755"
+    owner: "root"
+    content: |
+      @insert: file:./files/custom-environment
