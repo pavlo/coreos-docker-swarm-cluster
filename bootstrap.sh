@@ -24,7 +24,7 @@ done
 
 $cluster_config_dir/tools/join-swarm-cluster.sh $1
 
-etcdctl set nodes/$1s/${COREOS_PRIVATE_IPV4} ${COREOS_PRIVATE_IPV4}
+#etcdctl set nodes/$1s/${COREOS_PRIVATE_IPV4} ${COREOS_PRIVATE_IPV4}
 
 $slack -m "Bootstrap completed for *$1* node at ${COREOS_PRIVATE_IPV4}!" -u $SLACK_WEBHOOK_URL -c "#$SLACK_CHANNEL"
 
