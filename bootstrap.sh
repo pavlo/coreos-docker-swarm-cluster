@@ -3,6 +3,14 @@
 echo "------------------------------"
 echo "BOOTSTRAP FOR $1 IS RUNNING"
 
+while [ "`curl http://${COREOS_PRIVATE_IPV4}:4001/v2/keys/nodes/bootstrapping | jq -r '.node.value'`" != "null" ]; do
+  echo "An other node is bootstrapping, waiting 5 seconds..."
+  sleep 5
+done
+
+# Set a lock
+etcdctl set /nodes/bootstrapping ${COREOS_PRIVATE_IPV4} --ttl 180
+
 set -o allexport
 source /etc/custom-environment
 set +o allexport
@@ -25,10 +33,10 @@ do
 done
 
 
-
-#etcdctl set nodes/$1s/${COREOS_PRIVATE_IPV4} ${COREOS_PRIVATE_IPV4}
-
 $slack -m "Bootstrap completed for *$1* node at ${COREOS_PRIVATE_IPV4}!" -u $SLACK_WEBHOOK_URL -c "#$SLACK_CHANNEL"
+
+# release the lock
+etcdctl rm /nodes/bootstrapping
 
 echo "BOOTSTRAP FOR $1 COMPLETED"
 echo "------------------------------"
