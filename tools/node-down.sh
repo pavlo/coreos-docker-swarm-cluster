@@ -9,7 +9,7 @@ slack=$cluster_config_dir/tools/send-message-to-slack.sh
 
 /usr/bin/etcdctl rm /nodes/${NODE_ROLE}s/${COREOS_PRIVATE_IPV4}
 
-if [ "$ROLE_NODE" == "worker" ]; then
+if [ "$NODE_ROLE" == "worker" ]; then
     docker swarm leave
 fi
 
