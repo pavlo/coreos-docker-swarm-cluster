@@ -14,10 +14,6 @@ coreos:
       command: start
       content: |
         @insert: file:./systemd-units/cluster-bootstrap.service
-    - name: node-lifecycle.service
-      command: start
-      content: |
-        @insert: file:./systemd-units/node-lifecycle.service
   update:
     reboot-strategy: "etcd-lock"
 write_files:
