@@ -18,7 +18,12 @@ set +o allexport
 cluster_config_dir=/etc/coreos-docker-swarm-cluster
 slack=$cluster_config_dir/tools/send-message-to-slack.sh
 
-$slack -m "Bootstraping a *$1* node at ${COREOS_PRIVATE_IPV4}" -u $SLACK_WEBHOOK_URL -c "#$SLACK_CHANNEL"
+$slack -m "_${COREOS_PRIVATE_IPV4}_: Bootstraping a *$1* node" -u $SLACK_WEBHOOK_URL -c "#$SLACK_CHANNEL"
+
+# sleep a random number of seconds to prevent two managers to kick off at the same time
+# this happens when etcd cluster awaits for all manager nodes to come up - at that point 
+# they all get launched nearly at the same time
+sleep $[ ( $RANDOM % 10 ) + 1 ]s
 
 $cluster_config_dir/tools/join-swarm-cluster.sh $1
 
@@ -29,11 +34,11 @@ do
    cp -rf $cluster_config_dir/systemd-units/$unit /etc/systemd/system
    systemctl daemon-reload
    systemctl start $unit
-   $slack -m "-- Started unit _${unit}_ on ${COREOS_PRIVATE_IPV4}" -u $SLACK_WEBHOOK_URL -c "#$SLACK_CHANNEL"
+   $slack -m "_${COREOS_PRIVATE_IPV4}_: Started unit _${unit}_ on ${COREOS_PRIVATE_IPV4}" -u $SLACK_WEBHOOK_URL -c "#$SLACK_CHANNEL"
 done
 
 
-$slack -m "Bootstrap completed for *$1* node at ${COREOS_PRIVATE_IPV4}!" -u $SLACK_WEBHOOK_URL -c "#$SLACK_CHANNEL"
+$slack -m "_${COREOS_PRIVATE_IPV4}_:Bootstrap completed for *$1* node at ${COREOS_PRIVATE_IPV4}!" -u $SLACK_WEBHOOK_URL -c "#$SLACK_CHANNEL"
 
 # release the lock
 etcdctl rm /nodes/bootstrapping
