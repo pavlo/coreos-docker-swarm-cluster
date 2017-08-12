@@ -7,9 +7,14 @@ After=vault.service
 [Service]
 TimeoutStartSec=0
 EnvironmentFile=/etc/environment
+EnvironmentFile=/etc/custom-environment
+
 ExecStart=/bin/bash -c 'while true; do \
     if [ `curl http://localhost:8200/v1/sys/seal-status | jq '.sealed'` = 'false' ]; \
       then /usr/bin/etcdctl set /services/vault/${COREOS_PRIVATE_IPV4} "http://${COREOS_PRIVATE_IPV4}:8200" --ttl 60; \
+    fi; \
+    if [ `curl http://localhost:8200/v1/sys/seal-status | jq '.sealed'` = 'true' ]; \
+      then /etc/coreos-docker-swarm-cluster/tools/send-message-to-slack.sh -m "_${COREOS_PRIVATE_IPV4}_: Vault is SEALED!" -u $SLACK_WEBHOOK_URL -c "$SLACK_CHANNEL"; \
     fi; \
     sleep 45; \
     done'

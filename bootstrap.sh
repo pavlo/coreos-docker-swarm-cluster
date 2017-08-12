@@ -38,7 +38,7 @@ do
 done
 
 
-$slack -m "_${COREOS_PRIVATE_IPV4}_:Bootstrap completed for *$1* node at ${COREOS_PRIVATE_IPV4}!" -u $SLACK_WEBHOOK_URL -c "#$SLACK_CHANNEL"
+$slack -m "_${COREOS_PRIVATE_IPV4}_: Bootstrap completed for *$1* node at ${COREOS_PRIVATE_IPV4}!" -u $SLACK_WEBHOOK_URL -c "#$SLACK_CHANNEL"
 
 # release the lock
 etcdctl rm /nodes/bootstrapping
