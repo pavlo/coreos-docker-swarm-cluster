@@ -7,7 +7,7 @@ set -o allexport
 source /etc/custom-environment
 set +o allexport
 
-unit_files="$1-systemd-units.txt"
+unit_files="/etc/coreos-docker-swarm-cluster/$1-systemd-units.txt"
 cat $unit_files | while read unit
 do
    echo "Starting unit: $unit..."
