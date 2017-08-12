@@ -1,7 +1,9 @@
 [Unit]
 Description=Vault Server
-Requires=cluster-bootstrap.service
-After=cluster-bootstrap.service
+Requires=docker.service
+Requires=etcd2.service
+After=docker.service
+After=etcd2.service
 
 [Service]
 EnvironmentFile=-/etc/environment
