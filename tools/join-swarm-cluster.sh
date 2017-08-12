@@ -3,7 +3,7 @@
 cluster_config_dir=/etc/coreos-docker-swarm-cluster
 slack=$cluster_config_dir/tools/send-message-to-slack.sh
 
-$slack -m "Bootstraping a *$1* node at ${COREOS_PRIVATE_IPV4}" -u $SLACK_WEBHOOK_URL -c "#$SLACK_CHANNEL"
+$slack -m "Bootstraping a *$1* node at ${COREOS_PRIVATE_IPV4}" -u $SLACK_WEBHOOK_URL -c "$SLACK_CHANNEL"
 
 MANAGER_ADVERTISE_ADDR=`curl http://${COREOS_PRIVATE_IPV4}:4001/v2/keys/nodes/managers | jq -r '.node.nodes[0].value'`
 
