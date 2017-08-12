@@ -1,0 +1,15 @@
+[Unit]
+Description=Node lifecycle service
+Requires=cluster-bootstrap.service
+After=cluster-bootstrap.service
+
+[Service]
+EnvironmentFile=-/etc/environment
+EnvironmentFile=-/etc/custom-environment
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/etc/coreos-docker-swarm-cluster/tools/node-up.sh
+ExecStop=/etc/coreos-docker-swarm-cluster/tools/node-down.sh
+
+[Install]
+WantedBy=multi-user.target
