@@ -1,8 +1,6 @@
 #!/bin/bash
 
-source /etc/custom-environment
-
-MANAGER_ADVERTISE_ADDR=`curl http://${COREOS_PRIVATE_IPV4}:4001/v2/keys/nodes/manager | jq -r '.node.nodes[0].value'`
+MANAGER_ADVERTISE_ADDR=`curl http://${COREOS_PRIVATE_IPV4}:4001/v2/keys/nodes/managers | jq -r '.node.nodes[0].value'`
 
 if [ -n $MANAGER_ADVERTISE_ADDR ]; then
   echo "JOINING DOCKER SWARM..."
