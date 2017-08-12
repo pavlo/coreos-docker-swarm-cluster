@@ -10,8 +10,6 @@ After=systemd-resolved.service
 [Service]
 EnvironmentFile=-/etc/environment
 EnvironmentFile=-/etc/custom-environment
-Type=oneshot
-RemainAfterExit=yes
 ExecStart=/etc/coreos-docker-swarm-cluster/tools/node-up.sh
 ExecStop=/etc/coreos-docker-swarm-cluster/tools/node-down.sh
 
