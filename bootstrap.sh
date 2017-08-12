@@ -14,12 +14,8 @@ cat $unit_files | while read unit
 do
    echo "Starting unit: $unit..."
    cp -rf $cluster_config_dir/systemd-units/$unit /etc/systemd/system
-   echo "Restarting systemd..."
    systemctl daemon-reload
-   #systemctl enable $unit
-   echo "Starting the unit"
    systemctl start $unit
-   echo "done"
 done
 
 echo "BOOTSTRAP FOR $1 COMPLETED"
