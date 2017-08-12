@@ -7,11 +7,13 @@ set -o allexport
 source /etc/custom-environment
 set +o allexport
 
-unit_files="/etc/coreos-docker-swarm-cluster/$1-systemd-units.txt"
+cluster_config_dir=/etc/coreos-docker-swarm-cluster
+
+unit_files="$cluster_config_dir/$1-systemd-units.txt"
 cat $unit_files | while read unit
 do
    echo "Starting unit: $unit..."
-   cp -rf ./systemd-units/$unit /etc/systemd/system
+   cp -rf $cluster_config_dir/systemd-units/$unit /etc/systemd/system
    #systemctl enable $unit
    systemctl start $unit
 done
