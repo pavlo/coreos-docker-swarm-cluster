@@ -14,6 +14,7 @@ cat $unit_files | while read unit
 do
    echo "Starting unit: $unit..."
    cp -rf $cluster_config_dir/systemd-units/$unit /etc/systemd/system
+   systemctl daemon-reload
    #systemctl enable $unit
    systemctl start $unit
 done
