@@ -13,7 +13,7 @@ coreos:
     - name: cluster-bootstrap.service
       command: start
       content: |
-        @insert: file:assets/systemd-units/cluster-bootstrap.service
+        @insert: file:./systemd-units/cluster-bootstrap.service
   update:
     reboot-strategy: "etcd-lock"
   write_files:
@@ -21,4 +21,4 @@ coreos:
       permissions: "755"
       owner: "root"
       content: |
-        @insert: file:assets/files/custom-environment
+        @insert: file:./files/custom-environment

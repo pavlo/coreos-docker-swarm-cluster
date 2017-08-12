@@ -10,7 +10,8 @@ EnvironmentFile=-/etc/environment
 Type=oneshot
 RemainAfterExit=yes
 ExecStartPre=-/usr/bin/rm -rf /etc/coreos-docker-swarm-cluster
-ExecStart=/usr/bin/git clone https://github.com/pavlo/coreos-docker-swarm-cluster.git /etc/coreos-docker-swarm-cluster
+ExecStartPre=/usr/bin/git clone https://github.com/pavlo/coreos-docker-swarm-cluster.git /etc/coreos-docker-swarm-cluster
+ExecStart=/etc/coreos-docker-swarm-cluster/bootstrap.sh @param:node-role
 
 [Install]
 WantedBy=multi-user.target
