@@ -42,18 +42,24 @@ Here's how a generation routine would look like these:
 
 1. Generating cluster token (it assumes that there're 3 managers cluster is it):
 
-    > curl https://discovery.etcd.io/new?size=3
+    ```
+    > curl https://discovery.etcd.io/new?size=3`
     https://discovery.etcd.io/3c105a68331369250997be6369adac6c
+    ```
 
 2. Preparing the `params.yml` file that will be used as a source of configuration parameters during generation:
 
+    ```
     > mv ./heatit/params.example.yml ./heatit/params.yml
+    ```
 
 3. Editing `./heatit/params.yml` - insert the cluster token generated in step #1 as a value for `coreos-cluster-token` parameter as well as set up Slack notification settings (todo: descripbe Slack setup in more detail)
 
 4. Generate the two cloud-config files in a single command:
 
+    ```
     > cd ./heatit; ./generate-configs.sh
+    ```
 
 This will produce two files: `manager.yml` and `worker.yml` in `./heatit` directory. Use them to provision your boxes. For example if AWS EC2 used, you can insert the contents of the file in the UI:
 
