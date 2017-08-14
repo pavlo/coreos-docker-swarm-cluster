@@ -31,9 +31,9 @@ The job is done in two distinct phases - generation of a `cloud-config` and `nod
 
 ### Generating the `cloud-config` file.
 
-A `cloud-config` file is used to bootstrap a CoreOS node. It essentially is a declaration of how a CoreOS node would look like and consist of. Once it is generated, it can be used to provision EC2 instances.
+A `cloud-config` file is used to bootstrap a CoreOS node. It essentially is a declaration of how a CoreOS node would look like and consist of. Once it is generated, it can be used to provision CoreOS nodes.
 
-Note, two cloud-config files need to be generated - the one for provisioning manager nodes and the other for provisioning workers. Here's how a generation routine would look like these:
+Note, there're two cloud-config files need to be generated - the one for provisioning *manager* nodes and the other for provisioning *workers*. Here's how a generation routine would look like these:
 
 1. Generating cluster token (it assumes that there're 3 managers cluster is it):
 
@@ -50,20 +50,20 @@ Note, two cloud-config files need to be generated - the one for provisioning man
 
     > cd ./heatit; ./generate-configs.sh
 
-This will produce two files: `manager.yml` and `worker.yml` in the current directory. Use them to provision your boxes. If you use AWS EC2, you can insert the contents of the file with the UI:
+This will produce two files: `manager.yml` and `worker.yml` in `./heatit` directory. Use them to provision your boxes. For example if AWS EC2 used, you can insert the contents of the file in the UI:
 
 ![EC2 Cloud Config](https://github.com/pavlo/coreos-docker-swarm-cluster/raw/develop/docs/images/cloud_config_aws_ec2.png) 
 
 ### Node bootstrapping
 
-This is where all interesting things begin. When a node that has been provisioned with either `master.yml` or `worker.yml` cloud-config file, starts up, it runs a single systemd unit called *Cluster Bootstrap*. See its declaration in `./heatit/systemd-units/cluster-bootstrap.service`. This service is doing two actions:
+This is where all interesting things begin! When a node that has been provisioned with either `master.yml` or `worker.yml` cloud-config file, boots up, it runs a single systemd unit called *Cluster Bootstrap*. See its declaration in `./heatit/systemd-units/cluster-bootstrap.service`. This service does two actions:
 
 1. Clones *this* GIT repository in to `/etc/coreos-docker-swarm-cluster` folder on the CoreOS node
 2. Executes `/etc/coreos-docker-swarm-cluster/bootstrap.sh` script
 
-This simple approach allows to easily change the node configuration, services etc without re-creating the node which in some circumstances would save tons of time. All one needed is just reboot the node and let it re-clone the repository and start from the boostrap routine scratch while maintaining etcd and swarm cluster belonging. 
+This simple approach allows easily to change the node configuration, services etc without re-creating the node which in some circumstances would save tons of time. All one needs is just reboot the node and let it re-clone the repository and start the boostrap routine from scratch while maintaining etcd and swarm cluster belongings. 
 
-So, the `/etc/coreos-docker-swarm-cluster/bootstrap.sh` script, in its turn, reads a list of systemd units and runs them in order on the node. For manager nodes it reads `./manager-systed-units.txt` file to get the list of units to run from. For worker nodes it reads `./worker-systemd-units.txt` file. 
+Then the `/etc/coreos-docker-swarm-cluster/bootstrap.sh` script, in its turn, reads a list of systemd units and runs them in order on the node. For the list of services to run on a *manager* nodes it reads `./manager-systed-units.txt` file. For worker nodes it reads `./worker-systemd-units.txt` file. 
 
 so, given the following is the content of `./manager-systed-units.txt`:
 
@@ -75,6 +75,6 @@ then each time you provision a new node with master.yml file, or reboot an exist
 
 ## Tooling
 
-In order to get it up and running you have to have the [Heatit!](https://github.com/pavlo/heatit) tool that is used to compile the  scripts into proper `cloud-config` files. 
+Deprecated: In order to get it up and running you have to have the [Heatit!](https://github.com/pavlo/heatit) tool that is used to compile the  scripts into proper `cloud-config` files. 
 
 todo: Provide direct links to download Heatit! binary
