@@ -65,18 +65,18 @@ This will produce two files: `manager.yml` and `worker.yml` in `./heatit` direct
 
 ![EC2 Cloud Config](https://github.com/pavlo/coreos-docker-swarm-cluster/raw/develop/docs/images/cloud_config_aws_ec2.png) 
 
-It is a one time operation - once the two are generated make sure you store the files in a safe place because you'll need to have them in order to provision more workers for instance, or add/replace managers.
+It is a one time operation - once the two are generated make sure to store the files in a safe place. They'll be needed when more workers would need to be provisioned, or managers added or replaced.
 
 ### Node bootstrapping
 
-This is where all interesting things begin! When a node that has been provisioned with either `master.yml` or `worker.yml` cloud-config file, boots up, it runs a single systemd unit called *Cluster Bootstrap*. See its declaration in `./heatit/systemd-units/cluster-bootstrap.service`. This service does two actions:
+This is where all interesting things begin! When a node, that has been provisioned with either `master.yml` or `worker.yml` cloud-config file, boots up it runs a single systemd unit called *Cluster Bootstrap*. See its declaration in [heatit/systemd-units/cluster-bootstrap.service](heatit/systemd-units/bootstrap.sh). This service does two actions:
 
 1. Clones *this* GIT repository in to `/etc/coreos-docker-swarm-cluster` folder on the CoreOS node
 2. Executes `/etc/coreos-docker-swarm-cluster/bootstrap.sh` script
 
 This simple approach allows easily to change the node configuration, services etc without re-creating the node which in some circumstances would save tons of time. All one needs is just reboot the node and let it re-clone the repository and start the boostrap routine from scratch while maintaining etcd and swarm cluster belongings. 
 
-Then the `/etc/coreos-docker-swarm-cluster/bootstrap.sh` script, in its turn, reads a list of systemd units and runs them in order on the node. For the list of services to run on a *manager* nodes it reads `./manager-systemd-units.txt` file. For worker nodes it reads `./worker-systemd-units.txt` file. 
+Then the [/etc/coreos-docker-swarm-cluster/bootstrap.sh](bootstrap.sh) script, in its turn, reads a list of systemd units and runs them in order on the node. For the list of services to run on a *manager* nodes it reads [manager-systemd-units.txt](manager-systemd-units.txt) file. For worker nodes it reads [worker-systemd-units.txt](worker-systemd-units.txt) file. 
 
 so, given the following is the content of `./manager-systemd-units.txt`:
 
