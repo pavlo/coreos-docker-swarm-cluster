@@ -4,9 +4,9 @@ This project features a set of tools to automate the setup and maintenance of a 
 
 ## Cluster layout
 
-There're two clusters actually - a CoreOS cluster and a docker swarm cluster on top of it. This means that the applications you run in the cluster can use `etcd` provided by the CoreOS which is incredibly handy in various situations.
+There're two clusters actually - a [CoreOS cluster](https://coreos.com/os/docs/latest/cluster-architectures.html) and a [docker swarm](https://docs.docker.com/engine/swarm/) cluster on top of it. This means that the applications you run in the cluster can use `etcd` provided by the CoreOS which is incredibly handy in various situations.
 
-todo: diagram and explain the layout
+![Image of Yaktocat](https://octodex.github.com/images/yaktocat.png)
 
 ## Tooling
 
