@@ -52,7 +52,7 @@ Note, two cloud-config files need to be generated - the one for provisioning man
 
 This will produce two files: `manager.yml` and `worker.yml` in the current directory. Use them to provision your boxes. If you use AWS EC2, you can insert the contents of the file with the UI:
 
-![EC2 Cloud Config](https://github.com/pavlo/coreos-docker-swarm-cluster/raw/develop/docs/images/cloud_config_ec2.png) 
+![EC2 Cloud Config](https://github.com/pavlo/coreos-docker-swarm-cluster/raw/develop/docs/images/cloud_config_aws_ec2.png) 
 
 
 ## Tooling
