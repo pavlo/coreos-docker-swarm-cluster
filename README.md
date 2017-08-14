@@ -54,6 +54,24 @@ This will produce two files: `manager.yml` and `worker.yml` in the current direc
 
 ![EC2 Cloud Config](https://github.com/pavlo/coreos-docker-swarm-cluster/raw/develop/docs/images/cloud_config_aws_ec2.png) 
 
+### Node bootstrapping
+
+This is where all interesting things begin. When a node that has been provisioned with either `master.yml` or `worker.yml` cloud-config file, starts up, it runs a single systemd unit called *Cluster Bootstrap*. See its declaration in `./heatit/systemd-units/cluster-bootstrap.service`. This service is doing two actions:
+
+1. Clones *this* GIT repository in to `/etc/coreos-docker-swarm-cluster` folder on the CoreOS node
+2. Executes `/etc/coreos-docker-swarm-cluster/bootstrap.sh` script
+
+This simple approach allows to easily change the node configuration, services etc without re-creating the node which in some circumstances would save tons of time. All one needed is just reboot the node and let it re-clone the repository and start from the boostrap routine scratch while maintaining etcd and swarm cluster belonging. 
+
+So, the `/etc/coreos-docker-swarm-cluster/bootstrap.sh` script, in its turn, reads a list of systemd units and runs them in order on the node. For manager nodes it reads `./manager-systed-units.txt` file to get the list of units to run from. For worker nodes it reads `./worker-systemd-units.txt` file. 
+
+so, given the following is the content of `./manager-systed-units.txt`:
+
+    node-lifecycle.service
+    vault.service
+    vault-sk.service
+
+then each time you provision a new node with master.yml file, or reboot an existing one, it would execute `node-lifecycle.service`, `vault.service` and then `vault-sk.service` on the node. Same applies to worker nodes with the exception is that it would read `./worker-systemd-units.txt` file.
 
 ## Tooling
 
