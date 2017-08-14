@@ -4,26 +4,29 @@ This project features a set of tools to automate the setup and maintenance of a 
 
 ## Cluster layout
 
-There're two clusters actually - a [CoreOS cluster](https://coreos.com/os/docs/latest/cluster-architectures.html) and a [docker swarm](https://docs.docker.com/engine/swarm/) cluster on top of it. This means that the applications you run in the cluster can use `etcd` provided by the CoreOS which is incredibly handy in various situations.
-
-### The layout
-
 Cluster layout would look like this:
 
 ![Cluster Layout](https://github.com/pavlo/coreos-docker-swarm-cluster/raw/develop/docs/images/cluster_layout.png)
 
 So, it has either 1, 3 (shown on the diagram) or 5 manager nodes as well as arbitrary number of worker nodes.
 
-So each manager node:
+### So each manager node:
 
 * Runs an `etcd` service
 * Is a docker swarm manager node
 * Has [Vault](https://www.vaultproject.io) service running with `etcd` as a storage backend (optional)
 
-While every worker node:
+### While every worker node:
 
 * Runs `etcd` service in [proxy mode](https://coreos.com/etcd/docs/latest/v2/proxy.html) (so it does not participate in consensus but allows to read and write the K/V stuff)
 * Is a docker swarm worker node
+
+## Disclaimer 
+
+The project does not make any assumptions on where you host the cluster and how you provision the boxes. Digitalocean or AWS or any other provider that allows to provision boxes with `user-data` or `cloud-config` stuff can be used.
+
+It is outside the scope of the project to set up a secure network for the cluster, this is what one needs to do specifically using VPC and public/private subnets if AWS is used.
+
 
 ## How it works
 
@@ -44,7 +47,7 @@ Note, there're two cloud-config files need to be generated - the one for provisi
 
     > mv ./heatit/params.example.yml ./heatit/params.yml
 
-3. Editing ./heatit/params.yml - insert the cluster token generated in step #1 as a value for `coreos-cluster-token` parameter as well as set up Slack notification settings (todo: descripbe this in more detail)
+3. Editing `./heatit/params.yml` - insert the cluster token generated in step #1 as a value for `coreos-cluster-token` parameter as well as set up Slack notification settings (todo: descripbe Slack setup in more detail)
 
 4. Generate the two cloud-config files in a single command:
 
