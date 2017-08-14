@@ -70,9 +70,9 @@ This is where all interesting things begin! When a node that has been provisione
 
 This simple approach allows easily to change the node configuration, services etc without re-creating the node which in some circumstances would save tons of time. All one needs is just reboot the node and let it re-clone the repository and start the boostrap routine from scratch while maintaining etcd and swarm cluster belongings. 
 
-Then the `/etc/coreos-docker-swarm-cluster/bootstrap.sh` script, in its turn, reads a list of systemd units and runs them in order on the node. For the list of services to run on a *manager* nodes it reads `./manager-systed-units.txt` file. For worker nodes it reads `./worker-systemd-units.txt` file. 
+Then the `/etc/coreos-docker-swarm-cluster/bootstrap.sh` script, in its turn, reads a list of systemd units and runs them in order on the node. For the list of services to run on a *manager* nodes it reads `./manager-systemd-units.txt` file. For worker nodes it reads `./worker-systemd-units.txt` file. 
 
-so, given the following is the content of `./manager-systed-units.txt`:
+so, given the following is the content of `./manager-systemd-units.txt`:
 
     node-lifecycle.service
     vault.service
