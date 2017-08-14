@@ -36,7 +36,7 @@ The job is done in two distinct phases - generation of a `cloud-config` and node
 
 A `cloud-config` file is used to bootstrap a CoreOS node. It essentially is a declaration of how a CoreOS node would look like and consist of. Once it is generated, it can be used to provision CoreOS nodes.
 
-Note, there're two cloud-config files need to be generated - the one for provisioning *manager* nodes and the other for provisioning *workers*. It is a one time operation - once the two are generated make sure you store the files in a safe place because you'll need to have them in order to provision more workers for instance, or add/replace managers.
+Note, there're two cloud-config files need to be generated - the one for provisioning *manager* nodes and the other for provisioning *workers*.
 
 Here's how a generation routine would look like these:
 
@@ -58,6 +58,8 @@ Here's how a generation routine would look like these:
 This will produce two files: `manager.yml` and `worker.yml` in `./heatit` directory. Use them to provision your boxes. For example if AWS EC2 used, you can insert the contents of the file in the UI:
 
 ![EC2 Cloud Config](https://github.com/pavlo/coreos-docker-swarm-cluster/raw/develop/docs/images/cloud_config_aws_ec2.png) 
+
+It is a one time operation - once the two are generated make sure you store the files in a safe place because you'll need to have them in order to provision more workers for instance, or add/replace managers.
 
 ### Node bootstrapping
 
