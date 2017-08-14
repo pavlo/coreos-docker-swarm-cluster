@@ -25,18 +25,20 @@ So, it has either 1, 3 (shown on the diagram) or 5 manager nodes as well as arbi
 
 The project does not make any assumptions on where you host the cluster and how you provision the boxes. Digitalocean or AWS or any other provider that allows to provision boxes with `user-data` or `cloud-config` stuff can be used.
 
-It is outside the scope of the project to set up a secure network for the cluster, this is what one needs to do specifically using VPC and public/private subnets if AWS is used.
+It is outside the scope of the project to set up a secure network for the cluster - that is what one needs to do specifically using VPC and public/private subnets if AWS is used.
 
 
 ## How it works
 
-The job is done in two distinct phases - generation of a `cloud-config` and `node bootstrapping`. The two topics are discussed in detail in the following sections.
+The job is done in two distinct phases - generation of a `cloud-config` and node bootstrapping. The two topics are discussed in detail in the following sections.
 
 ### Generating the `cloud-config` file.
 
 A `cloud-config` file is used to bootstrap a CoreOS node. It essentially is a declaration of how a CoreOS node would look like and consist of. Once it is generated, it can be used to provision CoreOS nodes.
 
-Note, there're two cloud-config files need to be generated - the one for provisioning *manager* nodes and the other for provisioning *workers*. Here's how a generation routine would look like these:
+Note, there're two cloud-config files need to be generated - the one for provisioning *manager* nodes and the other for provisioning *workers*. It is a one time operation - once the two are generated make sure you store the files in a safe place because you'll need to have them in order to provision more workers for instance, or add/replace managers.
+
+Here's how a generation routine would look like these:
 
 1. Generating cluster token (it assumes that there're 3 managers cluster is it):
 
